@@ -1,5 +1,5 @@
 [project]
-name = "fast-api-accelerate"
+name = "fast_api_accelerate"
 version = "0.1.0"
 description = "CLI to scaffold structured FastAPI backend projects"
 readme = "README.md"
@@ -9,7 +9,7 @@ dependencies = [
 ]
 
 [project.scripts]
-fast-api-accelerate = "fastapi_cli.main:run"
+fast-api-accelerate = "fast_api_accelerate.main:run"
 
 [dependency-groups]
 dev = [
