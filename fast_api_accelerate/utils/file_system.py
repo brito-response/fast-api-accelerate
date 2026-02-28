@@ -18,37 +18,42 @@ class FileSystem:
     def create_dir(self, path: Path):
         if not path.exists():
             path.mkdir(parents=True, exist_ok=True)
-            self._log(f"📁 Created directory: {path}")
         else:
             self._log(f"📁 Directory already exists: {path}")
 
     def create_file(self,path: Path, content: str, overwrite: bool = False):
         if path.exists() and not overwrite:
-            self._log(f"⚠️ File already exists (skipped): {path}")
+            self._log(f"\033[93m⚠\033[0mfile already exists (skipped): {path}")
             return
 
         path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
+    
+    def update_file(self, path: Path, content: str):
+        if not path.exists():
+            self._log(f"\033[93m⚠\033[0mfile does not exist (cannot update): {path}")
+            return
 
-        self._log(f"reated file📄: {path}")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(content)
 
     def append_to_file(self, path: Path, content: str):
         if not path.exists():
-            self._log(f"⚠️ File does not exist for append: {path}")
+            self._log(f"\033[93m⚠\033[0mfile does not exist for append: {path}")
             return
 
         with open(path, "a", encoding="utf-8") as f:
             f.write(content)
 
-        self._log(f"➕ Appended to file: {path}")
+        self._log(f"\033[92m + \033[0m Appended to file: {path}")
 
     def install_dependencies(self):
         self._log(f"📦 Installing project dependencies in {self.project_path}...")
         subprocess.run(["uv", "sync"], cwd=self.project_path, check=True)
-        self._log("✅ Dependencies installed successfully.")
+        self._log("\033[92m✓\033[0m Dependencies installed successfully.")
 
     def run_command(self, command: str):
-        self._log(f"⚙️ Running command: {command}")
+        self._log(f"\033[92m✓\033[0m Running command: {command}")
         subprocess.run(command.split(),check=True)

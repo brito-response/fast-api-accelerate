@@ -1,6 +1,5 @@
 def base_service_template() -> str:
-    return """
-from typing import Generic, TypeVar, List
+    return """from typing import Generic, TypeVar, List
 from fastapi import HTTPException, status
 
 T = TypeVar("T")

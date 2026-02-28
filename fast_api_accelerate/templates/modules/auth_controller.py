@@ -1,6 +1,5 @@
 def auth_controller_template() -> str:
-    return """
-from fastapi import APIRouter, Depends
+    return """from fastapi import APIRouter, Depends
 from src.modules.auth.services import AuthService
 from ..dtos import LoginRequest, RefreshRequest, TokenResponse,RefreshTokenResponse
 from src.core.container_ioc import get_auth_service, get_current_user

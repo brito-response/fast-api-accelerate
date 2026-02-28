@@ -1,6 +1,5 @@
 def user_model_template()-> str:
-    return """
-from sqlalchemy import String, Integer, ForeignKey, ARRAY
+    return """from sqlalchemy import String, Integer, ForeignKey, ARRAY
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.core.configs import settings
 from sqlalchemy import Enum

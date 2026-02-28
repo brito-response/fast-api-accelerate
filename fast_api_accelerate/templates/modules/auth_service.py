@@ -1,6 +1,5 @@
 def auth_service_template()->str:
-    return """
-from datetime import datetime, timedelta, UTC
+    return """from datetime import datetime, timedelta, UTC
 from typing import Dict, Any
 from fastapi import HTTPException, status
 from jose import jwt, JWTError

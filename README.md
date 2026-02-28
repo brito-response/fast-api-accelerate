@@ -52,6 +52,9 @@ from inside the folder with env enabled
 ```bash
     cd fast_api_accelerate && python3 main.py --help
 ```
+## inatall in your machine 
+pipx install --editable .
+pipx uninstall fast-api-accelerate
 
 List the subcommands:
 create    Create a new FastAPI project

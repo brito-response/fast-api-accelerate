@@ -1,6 +1,5 @@
 def main_project_template(name:str ) -> str:
-    return f""" 
-from fastapi import FastAPI
+    return f"""from fastapi import FastAPI
 from src.modules.users.controllers import UsersController
 from src.modules.auth.controllers import AuthController
 from fastapi.staticfiles import StaticFiles

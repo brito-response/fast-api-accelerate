@@ -24,6 +24,10 @@ class BaseBuilder(ABC):
     def create_file(self, path: Path, content: str):
         """ Wrapper for creating a file. """
         self.fs.create_file(path, content)
+    
+    def update_file(self, path: Path, content: str):
+        """ Wrapper for update a file. """
+        self.fs.update_file(path, content)
 
     def append_file(self, path: Path, content: str):
         """ Wrapper for appending content. """

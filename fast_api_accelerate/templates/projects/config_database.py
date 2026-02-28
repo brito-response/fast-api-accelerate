@@ -1,6 +1,5 @@
 def config_database_template() -> str:
-    return """
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, AsyncSession
+    return """from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from typing import AsyncGenerator
 from .configs import settings

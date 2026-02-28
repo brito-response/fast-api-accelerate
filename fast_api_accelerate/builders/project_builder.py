@@ -1,7 +1,8 @@
 from pathlib import Path
 from .base import BaseBuilder
-from ..templates.projects import config_database_template, setup_db_template, readme_template, main_project_template, pyproject_template, base_repository_template, base_service_template, all_models_template 
+from ..templates.projects import config_database_template, setup_db_template, readme_template, main_project_template, pyproject_template, base_repository_template, base_service_template, all_models_template, config_conection_template, config_container_ioc_template, startup_template 
 from ..templates.modules import client_type_template, auth_service_template, auth_controller_template, user_model_template
+from ..templates.schemas import  init_dtos_template
 from ..utils.file_system import FileSystem
 
 class ProjectBuilder(BaseBuilder):
@@ -24,31 +25,6 @@ class ProjectBuilder(BaseBuilder):
         self.base_path_pkg = self.src_path / "base"
         self.models_path = self.src_path / "models"
         self.modules_path = self.src_path / "modules"
-
-    def build(self):
-        self._create_project_root()
-        self._create_app_structure()
-        self._create_main_file()
-        self._create_pyproject()
-        self._create_readme()
-        self._create_setup_db()
-        self._create_core_files()
-        self._create_base_files()
-        self._create_models()
-        self._create_modules()
-
-        if self.with_database:
-            self._configure_database()
-
-        if self.with_auth:
-            self._create_auth_module()
-
-        self._create_users_module()
-        self._create_modules(additional_modules=[]) # Módulos opcionais que o usuário quiser
-
-        self.install_dependencies()
-
-
 
     def _create_project_root(self):
         self.ensure_structure([self.project_path])
@@ -79,8 +55,19 @@ class ProjectBuilder(BaseBuilder):
 
     def _configure_database(self):
         db_file = self.core_path / self.FILE_DATABASE
-        self.create_file(db_file, config_database_template())
+        self.update_file(db_file, config_database_template())
 
+    def _create_config_conection(self):
+        config_file = self.core_path / "configs.py"
+        self.update_file(config_file, config_conection_template())
+    
+    def _create_container_ioc_conection(self):
+        container_ioc_file = self.core_path / "container_ioc.py"
+        self.update_file(container_ioc_file, config_container_ioc_template())
+
+    def _create_startup_app(self):
+        startup_file = self.core_path / "startup.py"
+        self.update_file(startup_file, startup_template())
 
     def _create_base_files(self):
         self.create_file(self.base_path_pkg / "base_repository.py", base_repository_template())
@@ -121,7 +108,7 @@ class ProjectBuilder(BaseBuilder):
 
         # dtos/__init__.py
         dtos_init = module_path / "dtos" / self.FILE_INIT
-        self.create_file(dtos_init,"from .login import LoginRequest\n""from .refresh import RefreshTokenResponse\n""from .token import TokenResponse\n""from .refreshrequest import RefreshRequest\n\n""__all__ = ['LoginRequest','RefreshTokenResponse','TokenResponse','RefreshRequest']" )
+        self.create_file(dtos_init, init_dtos_template() )
         # dtos templates
         for dto in ["login", "refresh", "token", "refreshrequest"]:
             self.create_file(module_path / "dtos" / f"{dto}.py", f"# Defina a classe {dto.capitalize()} aqui")
@@ -132,7 +119,6 @@ class ProjectBuilder(BaseBuilder):
         # controllers/auth_controller.py
         self.create_file(module_path / "controllers" / "auth_controller.py", auth_controller_template())
 
-        
     def _create_modules(self, additional_modules: list[str] = []):
         """ Cria módulos opcionais (não obrigatórios) com estrutura padrão: controllers, services, repositories e dtos. """
         for module in additional_modules:
@@ -143,3 +129,30 @@ class ProjectBuilder(BaseBuilder):
                 self.ensure_structure([sub_path])
                 self.create_file(sub_path / self.FILE_INIT, "")
             self.create_file(module_path / self.FILE_INIT, "")
+
+    def build(self):
+        self._create_project_root()
+        self._create_app_structure()
+        self._create_main_file()
+        self._create_pyproject()
+        self._create_readme()
+        self._create_setup_db()
+        self._create_core_files()
+        self._configure_database()
+        self._create_config_conection()
+        self._create_container_ioc_conection()
+        self._create_startup_app()
+        self._create_base_files()
+        self._create_models()
+        self._create_modules()
+
+        if self.with_database:
+            self._configure_database()
+
+        if self.with_auth:
+            self._create_auth_module()
+
+        self._create_users_module()
+        self._create_modules(additional_modules=[]) # Módulos opcionais que o usuário quiser
+
+        self.install_dependencies()

@@ -1,6 +1,5 @@
 def user_schemas_template()-> str:
-    return """
-   from pydantic import BaseModel, EmailStr
+    return """from pydantic import BaseModel, EmailStr
 
     class RegisterDTO(BaseModel):
         email: EmailStr

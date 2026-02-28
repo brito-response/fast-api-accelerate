@@ -1,6 +1,5 @@
 def base_repository_template() -> str:
-    return """
-from sqlalchemy.ext.asyncio import AsyncSession
+    return """from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Type, TypeVar, Generic, List, Optional
 
